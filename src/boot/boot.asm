@@ -1,14 +1,20 @@
-bits 16
+format pe64 dll efi
+entry main
 
-mov ah, 0x0e
-mov al, 'H'
-int 0x10
-mov al, 'i'
-int 0x10
+section '.text' code executable readable
 
-loop:
-	jmp loop
+include 'uefi.inc'
 
-times 510 - ($ - $$) db 0
+main:
+	InitializeLib
+	jc @f
 
-dw 0xaa55 ; make bootloader bootable
+	uefi_call_wrapper ConOut, OutputString, ConOut, _hi
+@@: mov eax, EFI_SUCCESS
+	retn
+
+section '.data' data readable writeable
+
+_hello                                  du 'Hello World',13,10,0
+
+section '.reloc' fixups data discardable
