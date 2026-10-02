@@ -1,8 +1,7 @@
 BUILD_DIR = build/
 PROGRAM_NAME = OMNIX
 
-SRC = $(wildcard src/*.c)
-INCLUDE = 
+SRC = $(wildcard src/boot*.c)
 OBJ = $(patsubst src/%.c,$(BUILD_DIR)/%.o,$(SRC))
 
 all: OMNIX
@@ -14,7 +13,7 @@ OMNIX: $(OBJ)
 	gcc $(OBJ) -o $(BUILD_DIR)/$(PROGRAM_NAME)
 
 build/%.o: src/%.c | build
-	gcc -fno-stack-protector -fpic -fshort-wchar -mno-red-zone -DGNU_EFI_USE_MS_ABI -Wall -c $< -o $@
+	gcc -I/usr/include/efi -I/usr/include/efi/x86_64 -fno-stack-protector -fpic -fshort-wchar -mno-red-zone -DGNU_EFI_USE_MS_ABI -Wall -c $< -o $@
 
 build:
 	mkdir -p $(BUILD_DIR)
