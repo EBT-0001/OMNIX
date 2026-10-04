@@ -3,6 +3,8 @@
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 ![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)
 
+<img src="OMNIX.png" width="128" height="128">
+
 OMNIX is an OS focused on being optimized to work as well as possible for your specific system, you compile it yourself for compatibility on your system.
 
 ### Prerequisites
