@@ -1,22 +1,44 @@
-BUILD_DIR = build/
-PROGRAM_NAME = OMNIX
+CC = gcc
+LD = ld
+OBJCOPY = objcopy
 
-SRC = $(wildcard src/boot*.c)
-OBJ = $(patsubst src/%.c,$(BUILD_DIR)/%.o,$(SRC))
+EFI_INCLUDE = /usr/include/efi
+EFI_LIB = /usr/lib
 
-all: OMNIX
+SRC = main.c
+OBJ = main.o
+SO = main.so
+EFI = main.efi
+NSH = startup.nsh
 
-run: OMNIX
-	./$(BUILD_DIR)/$(PROGRAM_NAME)
+CFLAGS = -I$(EFI_INCLUDE) -I$(EFI_INCLUDE)/x86_64 \
+-fno-stack-protector -fpic -fshort-wchar -mno-red-zone \
+-DGNU_EFI_USE_MS_ABI -Wall -Wextra -c
 
-OMNIX: $(OBJ)
-	gcc $(OBJ) -o $(BUILD_DIR)/$(PROGRAM_NAME)
+LDFLAGS = -nostdlib -znocombreloc -T $(EFI_LIB)/elf_x86_64_efi.lds \
+-shared -Bsymbolic $(EFI_LIB)/crt0-efi-x86_64.o \
+-L$(EFI_LIB) -lefi -lgnuefi
 
-build/%.o: src/%.c | build
-	gcc -I/usr/include/efi -I/usr/include/efi/x86_64 -fno-stack-protector -fpic -fshort-wchar -mno-red-zone -DGNU_EFI_USE_MS_ABI -Wall -c $< -o $@
+OBJCOPY_FLAGS = -j .text -j .sdata -j .data \
+-j .dynamic -j .dynsym -j .rel \
+-j .rela -j .reloc \
+--target=efi-app-x86_64 --subsystem=10
 
-build:
-	mkdir -p $(BUILD_DIR)
+all: $(EFI)
 
-clean: 
-	rm -r $(BUILD_DIR)
+$(OBJ): $(SRC)
+	$(CC) $(CFLAGS) $< -o $@
+
+$(SO): $(OBJ)
+	$(LD) $(LDFLAGS) $(OBJ) -o $@
+
+$(EFI): $(SO)
+	$(OBJCOPY) $(OBJCOPY_FLAGS) $< $@
+
+$(NSH): $(EFI)
+	echo "$(EFI)" > $(NSH)
+
+clean:
+	rm -f $(OBJ) $(SO) $(EFI) $(NSH)  # ← This line MUST start with TAB, rmv space
+
+.PHONY: all clean
