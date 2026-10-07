@@ -1,6 +1,7 @@
 CC = gcc
 LD = ld
 OBJCOPY = objcopy
+QEMU = qemu-system-x86_64
 
 EFI_INCLUDE = /usr/include/efi
 EFI_LIB = /usr/lib
@@ -22,7 +23,7 @@ LDFLAGS = -nostdlib -znocombreloc -T $(EFI_LIB)/elf_x86_64_efi.lds \
 OBJCOPY_FLAGS = -j .text -j .sdata -j .data \
 -j .dynamic -j .dynsym -j .rel \
 -j .rela -j .reloc \
---target=efi-app-x86_64 --subsystem=10
+--output-target=pei-x86_64 --subsystem=10
 
 all: $(EFI)
 
@@ -38,7 +39,12 @@ $(EFI): $(SO)
 $(NSH): $(EFI)
 	echo "$(EFI)" > $(NSH)
 
+run: $(EFI) $(NSH)
+	$(QEMU) -bios /usr/share/ovmf/OVMF.fd \
+	-drive format=raw,file=fat:rw:. \
+	-net none
+
 clean:
 	rm -f $(OBJ) $(SO) $(EFI) $(NSH)  # ← This line MUST start with TAB, rmv space
 
-.PHONY: all clean
+.PHONY: all run clean
