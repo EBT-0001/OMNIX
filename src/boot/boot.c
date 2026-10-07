@@ -3,6 +3,12 @@
 
 EFI_STATUS efi_main(EFI_HANDLE ImageHandle, EFI_SYSTEM_TABLE* SystemTable) {
 	InitializeLib(ImageHandle, SystemTable);
+
+	SystemTable->BootServices->SetWatchdogTimer(0, 0, 0, NULL);
+
+	Status = SystemTable->ConOut->ClearScreen(SystemTable->ConOut);
+    if (EFI_ERROR(Status)) return Status;
+
 	Print(L"OMNIX Project by Temperlius\n");
 	Print(L"Press any key to continue...\n");
 
