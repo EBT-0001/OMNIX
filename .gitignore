@@ -1,4 +1,5 @@
 build
 src/boot/build
 src/kernel/build
-src/boot/startup.nsh
+src/boot/NvVars
+.nsh
