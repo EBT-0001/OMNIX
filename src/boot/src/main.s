@@ -23,7 +23,9 @@ start:
 	call read_sector
 
 	jmp $
-%include "../src/disk.s"
-%include "../src/print.s"
+
+%include "src/disk.s"
+%include "src/print.s"
+
 times 510 - ($ - $$) db 0
 dw 0xAA55
