@@ -9,4 +9,7 @@ read_sector:
 	ret
 
 .fail:
+	mov si, error_msg
+	call printf
 	jmp $
+error_msg db "Disk Read Error", 0
