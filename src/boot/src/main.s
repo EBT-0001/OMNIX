@@ -20,6 +20,8 @@ start:
 	mov ch, 0x00
 	mov cl, 0x02
 	mov dh, 0x00
+	mov si, "Loading From Disk...", 0
+	call printf
 	call read_sector
 
 	jmp $
