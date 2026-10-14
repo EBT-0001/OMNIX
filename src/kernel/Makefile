@@ -15,7 +15,7 @@ $(BUILD)/kernel_entry.o: $(ENTRY) $(BUILD)
 	nasm $< -f elf -o $@
 
 $(BUILD)/kernel.o: $(SRC) $(BUILD)
-	CC -m32 -ffreestanding -c $< -o $@
+	CC -m32 -ffreestanding -Ilib -c $< -o $@
 
 $(BUILD):
 	mkdir -p /build
