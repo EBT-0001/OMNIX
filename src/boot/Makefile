@@ -7,8 +7,12 @@ BOOT = $(BUILD)/boot.bin
 FLAGS = -f bin
 
 all: $(BOOT)
+
+$(BOOT): $(SRC) $(BUILD)
+	$(AS) $(FLAGS) $< -o $(BUILD)/boot.bin
+
+$(BUILD):
 	mkdir -p build
-	$(AS) $(FLAGS) $< -o build/boot.bin
 
 clean:
 	rm -rf $(BUILD)
