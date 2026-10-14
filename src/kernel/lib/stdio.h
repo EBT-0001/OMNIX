@@ -89,5 +89,20 @@ int renameat(int, const char*, int, const char*);
 void rewind(FILE*);
 int scanf(const char* restrict, ...);
 void setbuf(FILE* restrict, char* restrict);
+int setvbuf(FILE* restrict, char* restrict, int, size_t);
+int snprintf(char* restrict, size_t, const char* restrict, ...);
+int sprintf(char* restrict, const char* restrict, ...);
+int sscanf(const char* restrict, const char* restrict, ...);
+FILE* tmpfile(void);
+char* tmpnam(char*);
+int ungetc(int, FILE*);
+int vdprintf(int, const char* restrict, va_list);
+int vfprintf(FILE* restrict, const char* restrict, va_list);
+int vfscanf(FILE* restrict, const char* restrict, va_list);
+int vprintf(const char* restrict, va_list);
+int vscanf(const char* restrict, va_list);
+int vsnprintf(char* restrict, size_t, const char* restrict, va_list);
+int vsprintf(char* restrict, size_t, const char* restrict, va_list);
+int vsscanf(const char* restrict, const char* restrict, va_list);
 
-#endig
+#endif
