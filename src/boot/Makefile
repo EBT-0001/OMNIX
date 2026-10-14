@@ -9,7 +9,7 @@ FLAGS = -f bin
 all: $(BOOT)
 
 $(BOOT): $(SRC) $(BUILD)
-	$(AS) $(FLAGS) $< -o $(BUILD)/boot.bin
+	$(AS) $(FLAGS) $< -o $@
 
 $(BUILD):
 	mkdir -p build
