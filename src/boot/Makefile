@@ -1,5 +1,4 @@
 AS = nasm
-QEMU = qemu-system-x86_64
 
 SRC = src/main.s
 BUILD = build/
