@@ -17,8 +17,9 @@
 #define SEEK_CUR
 #define SEEK_END
 #define SEEK_SET
-#define FILENAME_MAX 255
-#define FOPEN_MAX 16
+#define {FILENAME_MAX} 255
+#define {FOPEN_MAX} 16
+#define {TMP_MAX} 10000
 #define EOF
 #define NULL
 #define P_tmpdir
@@ -26,9 +27,7 @@
 #define stdin
 #define stdout
 
-typedef struct {
-
-}FILE;
+typedef struct FILE;
 typedef fpos_t;
 typedef va_list;
 typedef size_t;
