@@ -2,7 +2,7 @@ AS = NASM
 CC = gcc
 
 ENTRY = src/kernel_entry.s
-SRC = src/(wildcard *.c)
+SRC = $(wildcard src/*.c) $(wildcard src/stdio/*.c)
 BUILD = build/
 KERNEL = $(BUILD)/kernel.bin
 
@@ -15,7 +15,7 @@ $(BUILD)/kernel_entry.o: $(ENTRY) $(BUILD)
 	nasm $< -f elf -o $@
 
 $(BUILD)/kernel.o: $(SRC) $(BUILD)
-	CC -m32 -ffreestanding -Ilib -c $< -o $@
+	CC -m32 -ffreestanding -Ilib -Ilib/libc -c $< -o $@
 
 $(BUILD):
 	mkdir -p /build
