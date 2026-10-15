@@ -8,6 +8,9 @@
 #ifndef STDIO_H
 #define STDIO_H
 
+#include <stddef.h>
+#include <stdarg.h>
+
 #define BUFSIZ
 #define _IOFBF
 #define _IOLBF
@@ -27,10 +30,10 @@
 #define stdin
 #define stdout
 
-typedef struct FILE;
-typedef fpos_t;
-typedef va_list;
-typedef size_t;
+typedef struct FILE FILE;
+typedef fpos_t fpos_t;
+typedef va_list va_list;
+typedef size_t size_t;
 
 #define VIDEO_ADDRESS 0xb8000
 #define MAX_ROWS 25
@@ -51,8 +54,8 @@ char* fgets(char* restrict, int, FILE* restrict);
 int fileno(FILE*);
 void flockfile(FILE*);
 FILE* fmemopen(void* restrict, size_t, const char* restrict);
-FILE* fopen(const char* restrict, FILE* restrict);
-int fprintf(FILE* restrict, FILE* restrict, ...);
+FILE* fopen(const char* restrict, const char* restrict);
+int fprintf(FILE* restrict, const char* restrict, ...);
 int fputc(int, FILE*);
 int fputs(const char* restrict, const char* restrict);
 size_t fread(void* restrict, size_t, size_t, FILE* restrict);
