@@ -3,3 +3,4 @@ src/boot/build
 src/kernel/build
 src/boot/NvVars
 .nsh
+.directory
