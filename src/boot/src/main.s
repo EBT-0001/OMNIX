@@ -6,10 +6,11 @@
 # ===============================================================================
 
 .section .text
+	.code16
+	.org 0x0
 	.global _start
-	_start:
-		.code16
 
+	_start:
 		cli
 		cld
 
@@ -18,5 +19,14 @@
 		movw %ax, %ds
 		movw %ax, %es
 
-		. = _start + 510
-		.word 0xaa55
+		call enableA20
+
+		
+	enableA20:
+		pushw %ax
+		movb $0xdd, %al
+		outb %al, $0x64
+		popw ax
+		ret
+	.fill 510-(.-_start), 1, 0
+	.word 0xaa55
