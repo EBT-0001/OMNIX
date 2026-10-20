@@ -1,4 +1,4 @@
-AS = nasm
+AS = gas
 
 SRC = src/main.s
 BUILD = build/
