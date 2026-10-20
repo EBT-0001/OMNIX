@@ -1,10 +1,10 @@
-AS = gas
+AS := gas
 
-SRC = src/main.s
-BUILD = build/
-BOOT = $(BUILD)/boot.bin
+SRC := src/main.s
+BUILD := build/
+BOOT := $(BUILD)/boot.bin
 
-FLAGS = -f bin
+FLAGS := -f bin
 
 all: $(BOOT)
 
