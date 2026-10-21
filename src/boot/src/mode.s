@@ -24,10 +24,22 @@
 	.set PT_READABLE 2
 
 	.set SIZEOF_PAGE_TABLE 4096
+	.set ENTRIES_PER_PT 512
+	.set SIZEOF_PT_ENTRY 8
+	.set PAGE_SIZE 0x1000
+
+	.set CR4_PAE_ENABLE 1 << 5
+
+	.set EFER_MSR 0xc0000080
+	.set EFER_LM_ENABLE 1 << 8
+
+	.set CR0_PM_ENABLE 1 << 0
+	.set CR0_PG_ENABLE 1 << 31
 
 	setMode:
 		call checkCPUID
 		cmpl %ax, $0x01
+		jne .exit
 		je queryLongMode
 
 		ret
@@ -61,13 +73,13 @@
 		movl $CPUID_EXTENSIONS, %eax
 		cpuid
 		cmpl $CPUID_EXT_FEATURES, %eax
-		jc enableProtectedMode
+		jnc enableProtectedMode
 
 		movl $CPUID_EXT_FEATURES, %eax
 		cpuid
 		test $CPUID_EDX_EXT_FEAT_LM, %edx
-		jnz enableProtectedMode
-		jmp enableLongMode
+		jz enableLongMode
+		ret
 
 	enableLongMode:
 		movl $PML4T_ADDR, %edi
@@ -83,6 +95,35 @@
 		movl $(PDT_ADDR & PT_ADDR_MASK | PT_PRESENT | PT_READABLE), (%edi)
 		movl $PDT_ADDR, %edi
 		movl $(PT_ADDR & PT_ADDR_MASK | PT_PRESENT | PT_READABLE), %edi
+		movl $PT_ADDR, %edi
 
-	enableProtectedMode:
+		movl $(PT_PRESENT | PT_READABLE), %ebx
+		movl $ENTRIES_PER_PT, %ecx
+
+		.SetEntry:
+			movl %ebx, (%edi)
+			addl $PAGE_SIZE, %ebx
+			addl $SIZEOF_PT_ENTRY, %edi
+			loop .SetEntry
+
+		movl %cr4, %eax
+		orl $CR4_PAE_ENABLE, %eax
+		movl %eax, %cr4
+
+		movl $EFER_MSR, %ecx
+		rdmsr
+		orl $EFER_LM_ENABLE, %eax
+		wrmsr
+
+		movl %cr0, %eax
+		orl $(CR0_PG_ENABLE | CR0_PM_ENABLE), %eax
+
+		movl %eax, %cr0
+
+		lgdt (GDT.Pointer)
+		ljmp GDT.Code:LongMode
+	.exit:
+		cli
+		hlt
+		jmp .exit
 		
