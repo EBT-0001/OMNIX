@@ -9,5 +9,27 @@
 	.code16
 	.globl setMode
 
+	.set EFLAGS_ID 1 << 21
+
 	setMode:
+		call checkCPUID
+
 		ret
+
+	checkCPUID:
+		pushfd
+		popl %eax
+
+		movl %eax, %ecx
+		xorl $EFLAGS_ID, %eax
+
+		pushl %eax
+		popfd
+		pushfd
+		pop %eax
+
+		pushl %ecx
+		popfd
+
+		xorl %ecx, %eax
+		jnz .supported
