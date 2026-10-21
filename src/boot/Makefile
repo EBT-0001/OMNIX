@@ -1,6 +1,6 @@
 AS := gas
 
-SRC := src/main.s
+SRC := src/(wildcard *.s)
 BUILD := build/
 BOOT := $(BUILD)/boot.bin
 
