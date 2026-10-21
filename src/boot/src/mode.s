@@ -13,6 +13,8 @@
 
 	setMode:
 		call checkCPUID
+		cmpl %ax, $0x01
+		je queryLongMode
 
 		ret
 
@@ -33,3 +35,13 @@
 
 		xorl %ecx, %eax
 		jnz .supported
+
+		.notsupported:
+			movw $0x00, %ax
+			ret
+		.supported:
+			movw $0x01, %ax
+			ret
+
+	queryLongMode:
+		movl $
