@@ -1,21 +1,18 @@
-AS = NASM
-CC = gcc
+AS = gas
+LD = ld
 
-ENTRY = src/kernel_entry.s
-SRC = $(wildcard src/*.c) $(wildcard src/stdio/*.c)
+SRC = $(wildcard src/*.s) $(wildcard src/stdio/*.s)
 BUILD = build/
+OBJ = $(wildcard $(BUILD)/*.o)
 KERNEL = $(BUILD)/kernel.bin
 
 all: $(KERNEL)
 
-$(KERNEL): $(BUILD)/kernel_entry.o $(BUILD)/kernel.o
-	ld -m elf_i386 -o $@ -Ttext 0x1000 $^ --oformat binary
+$(KERNEL): $(OBJ)
+	$(LD) -m elf_i386 -Ttext=0x7c00 --nostartfiles --nostdlib-o $@ $<
 
-$(BUILD)/kernel_entry.o: $(ENTRY) $(BUILD)
-	nasm $< -f elf -o $@
-
-$(BUILD)/kernel.o: $(SRC) $(BUILD)
-	CC -m32 -ffreestanding -Ilib -Ilib/libc -c $< -o $@
+$(OBJ): $(SRC)
+	$(AS) --64 -o $@ $<
 
 $(BUILD):
 	mkdir -p /build
