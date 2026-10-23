@@ -10,7 +10,7 @@
 	.org 0x0
 	.globl _start
 
-	.set EFLAGS_ID,  1 << 21
+	.set EFLAGS_ID,  (1 << 21)
 
 	_start:
 		cli
