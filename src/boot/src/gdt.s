@@ -1,29 +1,27 @@
-;	OMNIX Copyright (C) 2026  Temperlius
-;	This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
-;	This is free software, and you are welcome to redistribute it
-;	under certain conditions; type `show c' for details.
+# =============================================================================== #
+#	OMNIX BIOS Bootloader Copyright (C) 2026 Temperlius                           #
+#	This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.    #
+#	This is free software, and you are welcome to redistribute it                 #
+#	under certain conditions; type `show c' for details.                          #
+# =============================================================================== #
 
-gdt_start:
-	dd 0x0
-	dd 0x0
-gdt_code:
-	dw 0xffff
-	dw 0x0
-	db 0x0
-	db 10011010b
-	db 11001111b
-	db 0x0
-gdt_data:
-	dw 0xffff
-	dw 0x0
-	db 0x0
-	db 10010010b
-	db 11001111b
-	db 0x0
-gdt_end:
-	gdt_descriptor:
-	dw gdt_end - gdt_start - 1 ;
-	dd gdt_start ;
+.section .text
+	.set PRESENT 1 << 7
+	.set NOT_SYS 1 << 4
+	.set EXEC 1 << 3
+	.set DC 1 << 2
+	.set RW 1 << 1
+	.set ACCESSED 1 << 0
 
-CODE_SEG equ gdt_code - gdt_start
-DATA_SEG equ gdt_data - gdt_start
+	.set GRAN_4K 1 << 7
+	.set SZ_32 1 << 6
+	.set LONG_MODE 1 << 5
+
+	.globl GDT
+	GDT:
+		.NULL:
+		.Code:
+		.Data:
+		.Pointer:
+			.word . GDT - 1
+			.quad GDT
