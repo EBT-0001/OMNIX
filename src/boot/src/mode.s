@@ -9,32 +9,32 @@
 	.code16
 	.globl setMode
 
-	.set EFLAGS_ID 1 << 21
-	.set CPUID_EXTENSIONS 0x80000000
-	.set CPUID_EXT_FEATURES 0x80000001
-	.set CPUID_EDX_EXT_FEAT_LM 1 << 29
+	.set EFLAGS_ID, (1 << 21)
+	.set CPUID_EXTENSIONS, 0x80000000
+	.set CPUID_EXT_FEATURES, 0x80000001
+	.set CPUID_EDX_EXT_FEAT_LM, (1 << 29)
 
-	.set PML4T_ADDR 0x1000
-	.set PDPT_ADDR 0x2000
-	.set PDT_ADDR 0x3000
-	.set PT_ADDR 0x4000
+	.set PML4T_ADDR, 0x1000
+	.set PDPT_ADDR, 0x2000
+	.set PDT_ADDR, 0x3000
+	.set PT_ADDR, 0x4000
 
-	.set PT_ADDR_MASK 0xffffffffff000
-	.set PT_PRESENT 1
-	.set PT_READABLE 2
+	.set PT_ADDR_MASK, 0xffffffffff000
+	.set PT_PRESENT, 1
+	.set PT_READABLE, 2
 
-	.set SIZEOF_PAGE_TABLE 4096
-	.set ENTRIES_PER_PT 512
-	.set SIZEOF_PT_ENTRY 8
-	.set PAGE_SIZE 0x1000
+	.set SIZEOF_PAGE_TABLE, 4096
+	.set ENTRIES_PER_PT, 512
+	.set SIZEOF_PT_ENTRY, 8
+	.set PAGE_SIZE, 0x1000
 
-	.set CR4_PAE_ENABLE 1 << 5
+	.set CR4_PAE_ENABLE, (1 << 5)
 
-	.set EFER_MSR 0xc0000080
-	.set EFER_LM_ENABLE 1 << 8
+	.set EFER_MSR, 0xc0000080
+	.set EFER_LM_ENABLE, (1 << 8)
 
-	.set CR0_PM_ENABLE 1 << 0
-	.set CR0_PG_ENABLE 1 << 31
+	.set CR0_PM_ENABLE, (1 << 0)
+	.set CR0_PG_ENABLE, (1 << 31)
 
 	setMode:
 		call checkCPUID
@@ -120,7 +120,7 @@
 
 		movl %eax, %cr0
 
-		lgdt (GDT.Pointer)
+		lgdt (GDT_DESCRIPTOR)
 		ljmp GDT.Code:LongMode
 	.exit:
 		cli
