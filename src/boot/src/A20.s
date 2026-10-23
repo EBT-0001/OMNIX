@@ -96,6 +96,6 @@
 
 .section .data
 	.OverMB:
-		.byte $0x00
+		.byte 0x00
 	.UnderMB:
-		.byte $0x00
+		.byte 0x00
