@@ -22,14 +22,14 @@
 
 		call A20wait2
 		movb $0x60, %al
-		pushl %eax
+		pushq %rax
 
 		call A20wait
 		movb $0xd1, %al
 		outb %al, $0x64
 
 		call A20wait
-		pop %eax
+		pop %rax
 		orb $0x02, %al
 		outb %al, $0x60
 
