@@ -18,6 +18,8 @@
 		movw %ax, %ds
 		movw %ax, %es
 
+		cli
+
 		call enableA20
 		call setMode
 	.fill 510-(.-_start), 1, 0
