@@ -38,9 +38,9 @@
 
 	setMode:
 		call checkCPUID
-		cmpl %ax, $0x01
+		cmpw $0x01, %ax
 		jne .exit
-		je queryLongMode
+		jmp queryLongMode
 
 		ret
 
@@ -73,12 +73,15 @@
 		movl $CPUID_EXTENSIONS, %eax
 		cpuid
 		cmpl $CPUID_EXT_FEATURES, %eax
-		jnc enableProtectedMode
+		jnc .exit
 
 		movl $CPUID_EXT_FEATURES, %eax
 		cpuid
-		test $CPUID_EDX_EXT_FEAT_LM, %edx
-		jz enableLongMode
+		testl $CPUID_EDX_EXT_FEAT_LM, %edx
+		jz .exit
+
+		jmp enableLongMode
+
 		ret
 
 	enableLongMode:
@@ -94,7 +97,7 @@
 		movl $PDPT_ADDR, %edi
 		movl $(PDT_ADDR & PT_ADDR_MASK | PT_PRESENT | PT_READABLE), (%edi)
 		movl $PDT_ADDR, %edi
-		movl $(PT_ADDR & PT_ADDR_MASK | PT_PRESENT | PT_READABLE), %edi
+		movl $(PT_ADDR & PT_ADDR_MASK | PT_PRESENT | PT_READABLE), (%edi)
 		movl $PT_ADDR, %edi
 
 		movl $(PT_PRESENT | PT_READABLE), %ebx
