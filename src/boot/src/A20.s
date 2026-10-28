@@ -6,7 +6,7 @@
 # =============================================================================== #
 
 .section .text
-	.code64
+	.code16
 	.globl enableA20
 
 	enableA20:
@@ -60,9 +60,12 @@
 		movb %es:(%di), %al
 		movb %al, .UnderMB
 
-		movb %ah, $0x01
-		movb $0x00, %ds:(%si)
-		movb $0x01, %es:(%di)
+		movb $1, %ah
+		movb $0, %ds:(%si)
+		movb $1, %es:(%di)
+		movb %ds:(%si), %al
+
+		cmp %es:(%di), %al
 		jne .exit
 		dec %ah
 
