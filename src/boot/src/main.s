@@ -13,15 +13,12 @@
 	.set EFLAGS_ID,  (1 << 21)
 
 	_start:
-		cli
-		cld
-
 		xorw %ax, %ax
 		movw %ax, %ss
 		movw %ax, %ds
 		movw %ax, %es
 
-		call setMode
 		call enableA20
+		call setMode
 	.fill 510-(.-_start), 1, 0
 	.word 0xaa55
