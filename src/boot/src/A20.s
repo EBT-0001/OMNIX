@@ -11,6 +11,8 @@
 
 	enableA20:
 		call checkA20
+		testb %al, %al
+		jnz .exit
 
 		call A20wait
 		movb $0xad, %al
@@ -21,15 +23,15 @@
 		outb %al, $0x64
 
 		call A20wait2
-		movb $0x60, %al
-		pushq %rax
+		inb $0x60, %al
+		pushw %ax
 
 		call A20wait
 		movb $0xd1, %al
 		outb %al, $0x64
 
 		call A20wait
-		pop %rax
+		popw %ax
 		orb $0x02, %al
 		outb %al, $0x60
 
@@ -47,7 +49,9 @@
 		pushw %ds
 		pushw %es
 
-		movw $0x0000, %ax
+		cli
+
+		xorw %ax, %ax
 		movw %ax, %ds
 		movw $0x0500, %si
 
@@ -65,40 +69,38 @@
 		movb $1, %es:(%di)
 		movb %ds:(%si), %al
 
-		cmp %es:(%di), %al
+		cmpb %es:(%di), %al
 		jne .exit
 		dec %ah
+	.exit:
+		movb .OverMB, %al
+		movb %al, %ds:(%si)
+		movb .UnderMB, %al
+		movb %al, %es:(%di)
+		shrw $8, %ax
+
+		popw %es
+		popw %ds
+		popw %di
+		popw %si
+		popf
+
+		ret
 
 	A20wait:
 		inb $0x64, %al
-		test $2, %al
+		testb $2, %al
 		jnz A20wait
 		ret
 
 	A20wait2:
 		inb $0x64, %al
-		test $1, %al
-		jz A20wait
-		ret
-
-	.exit:
-		movb .UnderMB, %al
-		movb %al, %ds:(%si)
-		movb .OverMB, %al
-		movb %al, %es:(%di)
-
-		shrw $8, %ax
-
-		popw es
-		popw ds
-		popw si
-		popw di
-		popf
-
+		testb $1, %al
+		jz A20wait2
 		ret
 
 .section .data
 	.OverMB:
-		.byte 0x00
+		.byte 0
 	.UnderMB:
-		.byte 0x00
+		.byte 0
