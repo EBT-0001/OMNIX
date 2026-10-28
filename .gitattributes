@@ -1,4 +1,4 @@
-*.S linguist-language=Unix Assembly
-*.s linguist-language=Unix Assembly
-*.asm linguist-language=Unix Assembly
-*.inc linguist-language=Unix Assembly
+*.S linguist-language="Unix Assembly"
+*.s linguist-language="Unix Assembly"
+*.asm linguist-language="Unix Assembly"
+*.inc linguist-language="Unix Assembly"
