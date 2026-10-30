@@ -26,7 +26,7 @@
 		.Null = . - GDT
 			.quad 0
 			
-		.Code = .set . - GDT
+		.Code = . - GDT
 			.Code.limit.lo: .word 0xffff
 			.Code.base_lo: .word 0
 			.Code.base_mid: .byte 0
@@ -34,7 +34,7 @@
 			.Code.flags: .byte  GRAN_4K | LONG_MODE | 0xf
 			.Code.base_hi: .byte 0
 			
-		.Data = .set . - GDT
+		.Data = . - GDT
 			.Data.limit_lo: .word 0xffff
 			.Data.base_lo: .word 0
 			.Data.base_mid: .byte 0
@@ -45,5 +45,5 @@
 	GDT_END:
 
 	GDT_DESCRIPTOR:
-		.word . GDT_END GDT - 1
+		.word GDT_END - GDT - 1
 		.quad GDT
