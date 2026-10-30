@@ -1,8 +1,8 @@
 # =============================================================================== #
-#	OMNIX BIOS Bootloader Copyright (C) 2026 Temperlius                           #
-#	This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.    #
-#	This is free software, and you are welcome to redistribute it                 #
-#	under certain conditions; type `show c' for details.                          #
+#   OMNIX BIOS Bootloader Copyright (C) 2026 Temperlius                           #
+#   This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.    #
+#   This is free software, and you are welcome to redistribute it                 #
+#   under certain conditions; type `show c' for details.                          #
 # =============================================================================== #
 
 .section .text
@@ -45,19 +45,19 @@
 		ret
 
 	checkCPUID:
-		pushfd
+		pushfl
 		popl %eax
 
 		movl %eax, %ecx
 		xorl $EFLAGS_ID, %eax
 
 		pushl %eax
-		popfd
-		pushfd
+		popfl
+		pushfl
 		pop %eax
 
 		pushl %ecx
-		popfd
+		popfl
 
 		xorl %ecx, %eax
 		jnz .supported
@@ -90,7 +90,7 @@
 
 		xorl %eax, %eax
 		mov $SIZEOF_PAGE_TABLE, %ecx
-		rep stosd
+		rep stosl
 		movl %cr3, %edi
 
 		movl $(PDPT_ADDR & PT_ADDR_MASK | PT_PRESENT | PT_READABLE), (%edi)
@@ -123,8 +123,8 @@
 
 		movl %eax, %cr0
 
-		lgdt (GDT_DESCRIPTOR)
-		ljmp GDT.Code:LongMode
+		lgdt GDT_DESCRIPTOR
+		ljmp $GDT_CODE, $LongModeEntry
 	.exit:
 		cli
 		hlt

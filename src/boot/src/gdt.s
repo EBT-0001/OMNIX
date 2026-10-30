@@ -23,10 +23,14 @@
 	.globl GDT_DESCRIPTOR
 
 	GDT:
-		.Null = . - GDT
+		.globl GDT_NULL
+		.globl GDT_CODE
+		.globl GDT_DATA
+
+		.set GDT_NULL, . - GDT
 			.quad 0
 			
-		.Code = . - GDT
+		.set GDT_CODE, . - GDT
 			.Code.limit.lo: .word 0xffff
 			.Code.base_lo: .word 0
 			.Code.base_mid: .byte 0
@@ -34,7 +38,7 @@
 			.Code.flags: .byte  GRAN_4K | LONG_MODE | 0xf
 			.Code.base_hi: .byte 0
 			
-		.Data = . - GDT
+		.set GDT_DATA, . - GDT
 			.Data.limit_lo: .word 0xffff
 			.Data.base_lo: .word 0
 			.Data.base_mid: .byte 0
