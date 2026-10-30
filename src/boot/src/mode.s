@@ -45,19 +45,19 @@
 		ret
 
 	checkCPUID:
-		pushfd
+		pushfl
 		popl %eax
 
 		movl %eax, %ecx
 		xorl $EFLAGS_ID, %eax
 
 		pushl %eax
-		popfd
-		pushfd
-		pop %eax
+		popfl
+		pushfl
+		popl %eax
 
 		pushl %ecx
-		popfd
+		popfl
 
 		xorl %ecx, %eax
 		jnz .supported
@@ -90,7 +90,7 @@
 
 		xorl %eax, %eax
 		mov $SIZEOF_PAGE_TABLE, %ecx
-		rep stosd
+		rep stosl
 		movl %cr3, %edi
 
 		movl $(PDPT_ADDR & PT_ADDR_MASK | PT_PRESENT | PT_READABLE), (%edi)
@@ -114,9 +114,9 @@
 		movl %eax, %cr4
 
 		movl $EFER_MSR, %ecx
-		rdmsr
+		rdmsl
 		orl $EFER_LM_ENABLE, %eax
-		wrmsr
+		wrmsl
 
 		movl %cr0, %eax
 		orl $(CR0_PG_ENABLE | CR0_PM_ENABLE), %eax
