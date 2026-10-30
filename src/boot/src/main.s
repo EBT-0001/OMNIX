@@ -7,7 +7,6 @@
 
 .section .text
 	.code16
-	.org 0x0
 	.globl _start
 
 	.set EFLAGS_ID,  (1 << 21)

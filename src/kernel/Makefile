@@ -9,7 +9,7 @@ KERNEL = $(BUILD)/kernel.bin
 all: $(KERNEL)
 
 $(KERNEL): $(OBJ)
-	$(LD) -m elf_i386 -Ttext=0x7c00 --nostartfiles --nostdlib-o $@ $<
+	$(LD) -m elf_i386 -Ttext=0x7c00 --nostdlib -o $@ $<
 
 $(OBJ): $(SRC)
 	$(AS) --64 -o $@ $<
