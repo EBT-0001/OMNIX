@@ -1,21 +1,24 @@
-AS = gas
-LD = ld
+AS := as
+LD := ld
 
-SRC = $(wildcard src/*.s) $(wildcard src/stdio/*.s)
-BUILD = build/
-OBJ = $(wildcard $(BUILD)/*.o)
-KERNEL = $(BUILD)/kernel.bin
+SRC := $(wildcard src/*.s)
+BUILD := build
+OBJ := $(patsubst src/%.s, $(BUILD)/%.o, $(SRC))
+KERNEL := $(BUILD)/kernel.bin
+
+ASFLAGS := --64
+LDFLAGS := -m elf_x86_64 -Ttext=0x100000 --nostdlib
 
 all: $(KERNEL)
 
 $(KERNEL): $(OBJ)
-	$(LD) -m elf_i386 -Ttext=0x7c00 --nostdlib -o $@ $<
+	$(LD) $(LDFLAGS) -o $@ $<
 
-$(OBJ): $(SRC)
-	$(AS) --64 -o $@ $<
+$(BUILD)/%.o: src/%.s | $(BUILD)
+	$(AS) $(ASFLAGS) -o $@ $<
 
 $(BUILD):
-	mkdir -p /build
+	mkdir -p $@
 
 clean:
 	rm -rf $(BUILD)
