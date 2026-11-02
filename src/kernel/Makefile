@@ -7,7 +7,7 @@ OBJ := $(patsubst src/%.s, $(BUILD)/%.o, $(SRC))
 KERNEL := $(BUILD)/kernel.bin
 
 ASFLAGS := --64
-LDFLAGS := -m elf_x86_64 -Ttext=0x100000 --nostdlib
+LDFLAGS := -melf_x86_64 -Ttext=0x100000 --nostdlib --oformat binary
 
 all: $(KERNEL)
 
