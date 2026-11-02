@@ -73,7 +73,7 @@
 		movl $CPUID_EXTENSIONS, %eax
 		cpuid
 		cmpl $CPUID_EXT_FEATURES, %eax
-		jnc .exit
+		jb .exit
 
 		movl $CPUID_EXT_FEATURES, %eax
 		cpuid
@@ -89,7 +89,7 @@
 		movl %edi, %cr3
 
 		xorl %eax, %eax
-		mov $SIZEOF_PAGE_TABLE, %ecx
+		movl $SIZEOF_PAGE_TABLE, %ecx
 		rep stosl
 		movl %cr3, %edi
 
@@ -123,8 +123,8 @@
 
 		movl %eax, %cr0
 
-		lgdt GDT_DESCRIPTOR
-		ljmp $GDT_CODE, $LongModeEntry
+		lgdt (GDT_DESCRIPTOR)
+		ljmp $GDT_CODE, $kernel_entry
 	.exit:
 		cli
 		hlt
