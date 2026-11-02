@@ -1,5 +1,5 @@
 # =============================================================================== #
-#   OMNIX BIOS Bootloader Copyright (C) 2026 Temperlius                           #
+#   OMNIX BIOS Bootloader Copyright (C) 2026 Ethan Temperley                      #
 #   This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.    #
 #   This is free software, and you are welcome to redistribute it                 #
 #   under certain conditions; type `show c' for details.                          #
@@ -21,7 +21,7 @@
 
 	.set PT_ADDR_MASK, 0xffffffffff000
 	.set PT_PRESENT, 1
-	.set PT_READABLE, 2
+	.set PT_WRITABLE, 2
 
 	.set SIZEOF_PAGE_TABLE, 4096
 	.set ENTRIES_PER_PT, 512
@@ -90,17 +90,18 @@
 
 		xorl %eax, %eax
 		movl $SIZEOF_PAGE_TABLE, %ecx
+		cld
 		rep stosl
 		movl %cr3, %edi
 
-		movl $(PDPT_ADDR & PT_ADDR_MASK | PT_PRESENT | PT_READABLE), (%edi)
+		movl $(PDPT_ADDR & PT_ADDR_MASK | PT_PRESENT | PT_WRITABLE), (%edi)
 		movl $PDPT_ADDR, %edi
-		movl $(PDT_ADDR & PT_ADDR_MASK | PT_PRESENT | PT_READABLE), (%edi)
+		movl $(PDT_ADDR & PT_ADDR_MASK | PT_PRESENT | PT_WRITABLE), (%edi)
 		movl $PDT_ADDR, %edi
-		movl $(PT_ADDR & PT_ADDR_MASK | PT_PRESENT | PT_READABLE), (%edi)
+		movl $(PT_ADDR & PT_ADDR_MASK | PT_PRESENT | PT_WRITABLE), (%edi)
 		movl $PT_ADDR, %edi
 
-		movl $(PT_PRESENT | PT_READABLE), %ebx
+		movl $(PT_PRESENT | PT_WRITABLE), %ebx
 		movl $ENTRIES_PER_PT, %ecx
 
 		.SetEntry:
