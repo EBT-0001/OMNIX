@@ -5,9 +5,9 @@
 
 ![OMNIX](OMNIX.png)
 
-OMNIX is an OS focused on being optimized to work as well as possible for your specific system, you compile it yourself for compatibility on your system.
+OMNIX is an OS focused on being minimal, lightweight, and optimized to work as well as possible for your specific system, you compile it yourself with only the files you immediately need for compatibility on your system.
 
 ### Prerequisites
-OMNIX requires gcc, a the gas assembler, and make installed.
+OMNIX requires gcc, the gas assembler, ld, and make installed.
 ### Licensing
-OMNIX is licensed under the GNU GPL 3.0 License.
+OMNIX is currently licensed under the GNU GPL 3.0 License
