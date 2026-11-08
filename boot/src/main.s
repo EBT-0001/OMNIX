@@ -1,8 +1,8 @@
 # =============================================================================== #
-#	OMNIX BIOS Bootloader Copyright (C) 2026 Ethan Temperley                      #
-#	This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.    #
-#	This is free software, and you are welcome to redistribute it                 #
-#	under certain conditions; type `show c' for details.                          #
+#   OMNIX BIOS Bootloader Copyright (C) 2026 Ethan Temperley                      #
+#   This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.    #
+#   This is free software, and you are welcome to redistribute it                 #
+#   under certain conditions; type `show c' for details.                          #
 # =============================================================================== #
 
 .section .text
@@ -12,12 +12,12 @@
 	.set EFLAGS_ID,  (1 << 21)
 
 	_start:
+		cli
+
 		xorw %ax, %ax
 		movw %ax, %ss
 		movw %ax, %ds
 		movw %ax, %es
-
-		cli
 
 		call enableA20
 		call setMode

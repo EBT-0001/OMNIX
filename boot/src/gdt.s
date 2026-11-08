@@ -29,7 +29,7 @@
 
 		.set GDT_NULL, . - GDT
 			.quad 0
-			
+
 		.set GDT_CODE, . - GDT
 			.Code.limit.lo: .word 0xffff
 			.Code.base_lo: .word 0
@@ -37,7 +37,7 @@
 			.Code.access: .byte PRESENT | NOT_SYS | EXEC | RW
 			.Code.flags: .byte  GRAN_4K | LONG_MODE | 0xf
 			.Code.base_hi: .byte 0
-			
+
 		.set GDT_DATA, . - GDT
 			.Data.limit_lo: .word 0xffff
 			.Data.base_lo: .word 0
@@ -45,7 +45,7 @@
 			.Data.access: .byte PRESENT | NOT_SYS | RW
 			.Data.flags: .byte GRAN_4K | SZ_32 | 0xf
 			.Data.base_hi: .byte 0
-			
+
 	GDT_END:
 
 	GDT_DESCRIPTOR:

@@ -1,28 +1,28 @@
-QEMU = qemu-system-i386
+QEMU = qemu-system-x86_64
 
 OMNIX = build/OMNIX.bin
-BOOT = src/boot/build/boot.bin
-KERNEL = src/kernel/build/kernel.bin
+BOOT = boot/build/boot.bin
+KERNEL = kernel/build/kernel.bin
 BUILD = build/
 
 all: $(OMNIX)
 
 run: $(OMNIX)
-	$(QEMU) -fda  $<
+	$(QEMU) -drive format=raw,file=$<
 
 $(OMNIX):  $(BOOT) $(KERNEL) $(BUILD)
 	cat $(BOOT) $(KERNEL) > $(OMNIX)
 
 $(BOOT):
-	$(MAKE) -C src/boot/
+	$(MAKE) -C boot/
 
 $(KERNEL):
-	$(MAKE) -C src/kernel/
+	$(MAKE) -C kernel/
 
 $(BUILD):
 	mkdir -p build
 
 clean:
-	rm -rf $(BUILD) src/boot/build/ src/kernel/build/
+	rm -rf $(BUILD) boot/build/ kernel/build/
 
 .PHONY: all clean run

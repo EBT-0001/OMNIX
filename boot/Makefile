@@ -7,7 +7,7 @@ OBJ := $(patsubst src/%.s, $(BUILD)/%.o, $(SRC))
 BOOT := $(BUILD)/boot.bin
 
 ASFLAGS := --64
-LDFLAGS := -melf_x86_64 -Ttext 0x7C00 --oformat binary
+LDFLAGS := -melf_x86_64 --nostdlib -O2 -Ttext 0x7C00 --oformat binary
 
 all: $(BOOT)
 
