@@ -7,9 +7,9 @@
 
 .section .text
 	.code64
-	.globl _start
+	.globl kernel_main
 
-	_start:
+	kernel_main:
 		cli
 	1:	hlt
 		jmp 1b
