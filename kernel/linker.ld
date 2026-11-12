@@ -1,6 +1,10 @@
+OUTPUT_FORMAT(binary)
+STARTUP(main.o)
 ENTRY(kernel_main)
 
-OUTPUT_FORMAT(binary)
+SECTIONS {
+	. = 100000;
 
-STARTUP(main.o)
+	.text : *{.text}
+}
 
