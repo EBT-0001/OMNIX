@@ -9,7 +9,16 @@
 	.code64
 	.globl printf
 	.type printf, @function
+	.globl putchar
+	.type putchar, @function
 
 	printf:
+		ret
 
-	ret
+	putchar:
+		movq $screen_x, %rsi
+		movq $screen_y, %rdx
+
+		call putchar_vga
+
+		ret

@@ -19,6 +19,8 @@
 		movw %ax, %ds
 		movw %ax, %es
 
+		movw $0x3000, %sp
+
 		call enableA20
 		call setMode
 	.fill 510-(.-_start), 1, 0

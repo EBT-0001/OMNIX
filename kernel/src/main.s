@@ -11,6 +11,14 @@
 
 	kernel_main:
 		cli
+
+		movq $stack_end, %rsp
+
 	1:	hlt
 		jmp 1b
 		ret
+.section .bss
+.align 16
+	stack_bottom:
+		.skip 16384
+	stack_end:

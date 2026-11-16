@@ -23,6 +23,8 @@ $(BUILD):
 	mkdir -p build
 
 clean:
-	rm -rf $(BUILD) boot/build/ kernel/build/
+	rm -rf $(BUILD)
+	$(MAKE) clean -C boot/
+	$(MAKE) clean -C kernel/
 
 .PHONY: all clean run
