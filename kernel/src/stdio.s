@@ -13,6 +13,12 @@
 	.type putchar, @function
 
 	printf:
+		movq %rdi,%rax
+		movq %rcx, %rbx
+		movq $0, %rcx
+		.print_loop:
+			movb (%rax, %rcx, 1), %rdi
+			
 		ret
 
 	putchar:
